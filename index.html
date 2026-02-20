@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Interactive Kuwait Zone Selector - Premium mobile-first design with smooth animations">
+    <meta name="keywords" content="Kuwait, zones, mobile, interactive, buttons, design">
+    <meta name="author" content="Your Name">
+    <meta property="og:title" content="Kuwait Zone Selector">
+    <meta property="og:description" content="Premium interactive zone selector for Kuwait areas">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#667eea">
+    
+    <title>Live Mode</title>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==========================================================================
+           CSS Variables - Easy Customization
+           ========================================================================== */
+        :root {
+            /* Primary Colors */
+            --ardiya-primary: #ff6b6b;
+            --ardiya-secondary: #ff8e53;
+            --hawally-primary: #667eea;
+            --hawally-secondary: #764ba2;
+            --sabha-primary: #00b09b;
+            --sabha-secondary: #96c93d;
+            --jahrah-primary: #fa709a;
+            --jahrah-secondary: #fee140;
+            
+            /* Background Colors */
+            --bg-primary: #0f0c29;
+            --bg-secondary: #24243e;
+            --bg-tertiary: #302b63;
+            
+            /* Typography */
+            --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --header-size: 2rem;
+            --text-size: 0.95rem;
+            --button-text-size: 0.9rem;
+            
+            /* Spacing */
+            --container-padding: 20px;
+            --button-gap: 20px;
+            --border-radius: 25px;
+            
+            /* Animation */
+            --animation-speed: 0.4s;
+            --animation-curve: cubic-bezier(0.23, 1, 0.320, 1);
+        }
+
+        /* ==========================================================================
+           Reset & Base Styles
+           ========================================================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            min-height: 100vh;
+            background: var(--bg-primary);
+            background: linear-gradient(to bottom, var(--bg-secondary), var(--bg-tertiary), var(--bg-primary));
+            font-family: var(--font-family);
+            overflow-x: hidden;
+            position: relative;
+            color: white;
+        }
+
+        /* ==========================================================================
+           Animated Background
+           ========================================================================== */
+        .bg-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            animation: float 20s infinite ease-in-out;
+            pointer-events: none;
+        }
+
+        .orb1 {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, var(--hawally-primary), var(--hawally-secondary));
+            top: -150px;
+            left: -150px;
+            animation-delay: 0s;
+        }
+
+        .orb2 {
+            width: 250px;
+            height: 250px;
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            bottom: -125px;
+            right: -125px;
+            animation-delay: 5s;
+        }
+
+        .orb3 {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-delay: 10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(50px, -50px) scale(1.1); }
+            50% { transform: translate(-30px, 30px) scale(0.9); }
+            75% { transform: translate(30px, 50px) scale(1.05); }
+        }
+
+        /* ==========================================================================
+           Header Section
+           ========================================================================== */
+        .header {
+            text-align: center;
+            padding: 40px var(--container-padding) 30px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .header h1 {
+            font-size: var(--header-size);
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--hawally-primary), var(--hawally-secondary), #f093fb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            animation: glow 3s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.2); }
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: var(--text-size);
+            font-weight: 400;
+        }
+
+        /* ==========================================================================
+           Main Container
+           ========================================================================== */
+        .main-container {
+            padding: 0 var(--container-padding) 40px;
+            max-width: 500px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* ==========================================================================
+           Button Grid - Responsive Design
+           ========================================================================== */
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--button-gap);
+            margin-bottom: 30px;
+        }
+
+        /* ==========================================================================
+           Premium Button Component
+           ========================================================================== */
+        .premium-btn {
+            position: relative;
+            aspect-ratio: 1;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: 600;
+            font-size: var(--button-text-size);
+            overflow: hidden;
+            transition: all var(--animation-speed) var(--animation-curve);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            animation: slideIn 0.6s var(--animation-curve) forwards;
+            opacity: 0;
+            transform: translateY(30px) scale(0.9);
+        }
+
+        .premium-btn:nth-child(1) { animation-delay: 0.1s; }
+        .premium-btn:nth-child(2) { animation-delay: 0.2s; }
+        .premium-btn:nth-child(3) { animation-delay: 0.3s; }
+        .premium-btn:nth-child(4) { animation-delay: 0.4s; }
+
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Glass effect overlay */
+        .premium-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: var(--border-radius);
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.3), rgba(255,255,255,0.1));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+
+        /* Button content wrapper */
+        .btn-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            padding: 20px;
+        }
+
+        /* Icon container with effects */
+        .icon-box {
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .icon-box::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+
+        .premium-btn:hover .icon-box::before,
+        .premium-btn:active .icon-box::before {
+            transform: translateX(100%);
+        }
+
+        .premium-btn:hover .icon-box,
+        .premium-btn:active .icon-box {
+            transform: scale(1.1) rotate(5deg);
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .premium-btn i {
+            font-size: 2rem;
+            transition: all 0.3s ease;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        }
+
+        .premium-btn:hover i,
+        .premium-btn:active i {
+            transform: scale(1.1);
+        }
+
+        .zone-label {
+            font-size: var(--button-text-size);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        /* ==========================================================================
+           Individual Zone Button Styles
+           ========================================================================== */
+        .btn-ardiya {
+            background: linear-gradient(135deg, 
+                rgba(255, 107, 107, 0.8), 
+                rgba(255, 142, 83, 0.8));
+            box-shadow: 0 8px 32px rgba(255, 107, 107, 0.3);
+        }
+
+        .btn-ardiya:hover,
+        .btn-ardiya:active {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(255, 107, 107, 0.5);
+        }
+
+        .btn-hawally {
+            background: linear-gradient(135deg, 
+                rgba(102, 126, 234, 0.8), 
+                rgba(118, 75, 162, 0.8));
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-hawally:hover,
+        .btn-hawally:active {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.5);
+        }
+
+        .btn-sabha {
+            background: linear-gradient(135deg, 
+                rgba(0, 176, 155, 0.8), 
+                rgba(150, 201, 61, 0.8));
+            box-shadow: 0 8px 32px rgba(0, 176, 155, 0.3);
+        }
+
+        .btn-sabha:hover,
+        .btn-sabha:active {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(0, 176, 155, 0.5);
+        }
+
+        .btn-jahrah {
+            background: linear-gradient(135deg, 
+                rgba(250, 112, 154, 0.8), 
+                rgba(254, 225, 64, 0.8));
+            box-shadow: 0 8px 32px rgba(250, 112, 154, 0.3);
+        }
+
+        .btn-jahrah:hover,
+        .btn-jahrah:active {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(250, 112, 154, 0.5);
+        }
+
+        /* ==========================================================================
+           Loading Overlay
+           ========================================================================== */
+        .loading-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .loading-overlay.show {
+            display: flex;
+        }
+
+        .loader {
+            width: 60px;
+            height: 60px;
+            position: relative;
+        }
+
+        .loader-circle {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 3px solid transparent;
+            border-top-color: var(--hawally-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .loader-circle:nth-child(2) {
+            width: 80%;
+            height: 80%;
+            top: 10%;
+            left: 10%;
+            border-top-color: var(--hawally-secondary);
+            animation-duration: 0.8s;
+            animation-direction: reverse;
+        }
+
+        .loader-circle:nth-child(3) {
+            width: 60%;
+            height: 60%;
+            top: 20%;
+            left: 20%;
+            border-top-color: #f093fb;
+            animation-duration: 0.6s;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ==========================================================================
+           Ripple Effect
+           ========================================================================== */
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.6);
+            transform: scale(0);
+            animation: rippleEffect 0.7s ease-out;
+            pointer-events: none;
+        }
+
+        @keyframes rippleEffect {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        /* ==========================================================================
+           Responsive Design
+           ========================================================================== */
+        @media (max-width: 480px) {
+            :root {
+                --header-size: 1.8rem;
+                --container-padding: 15px;
+                --button-gap: 15px;
+                --border-radius: 20px;
+            }
+            
+            .button-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 15px;
+            }
+            
+            .icon-box {
+                width: 60px;
+                height: 60px;
+            }
+            
+            .premium-btn i {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .button-grid {
+                grid-template-columns: repeat(4, 1fr);
+                max-width: 800px;
+                margin: 0 auto 30px;
+            }
+            
+            .premium-btn {
+                aspect-ratio: 1.2;
+            }
+        }
+
+        /* ==========================================================================
+           Safe Area Support (Notched Phones)
+           ========================================================================== */
+        @supports (padding: max(0px)) {
+            .main-container {
+                padding-left: max(var(--container-padding), env(safe-area-inset-left));
+                padding-right: max(var(--container-padding), env(safe-area-inset-right));
+                padding-bottom: max(40px, env(safe-area-inset-bottom));
+            }
+        }
+
+        /* ==========================================================================
+           Touch Feedback
+           ========================================================================== */
+        .premium-btn:active {
+            transform: translateY(-8px) scale(0.98);
+        }
+
+        /* ==========================================================================
+           Footer (Optional)
+           ========================================================================== */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.85rem;
+        }
+
+        .footer a {
+            color: var(--hawally-primary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: var(--hawally-secondary);
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background Orbs -->
+    <div class="bg-orb orb1"></div>
+    <div class="bg-orb orb2"></div>
+    <div class="bg-orb orb3"></div>
+
+    <!-- Header Section -->
+    <header class="header">
+        <h1>Select Your Zone</h1>
+        <p>Welcome to your Area.</p>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-container">
+        <div class="button-grid">
+            <!-- Ardiya Zone Button -->
+            <button class="premium-btn btn-ardiya" 
+                    data-zone="Ardiya Zone" 
+                    data-icon="pizza-slice"
+                    data-link="ardiya.html"
+                    aria-label="Select Ardiya Zone">
+                <div class="btn-content">
+                    <div class="icon-box">
+                        <i class="fas fa-pizza-slice"></i>
+                    </div>
+                    <span class="zone-label">Ardiya Zone</span>
+                </div>
+            </button>
+            
+            <!-- Hawally Zone Button -->
+            <button class="premium-btn btn-hawally" 
+                    data-zone="Hawally Zone" 
+                    data-icon="hamburger"
+                    data-link="hawally.html"
+                    aria-label="Select Hawally Zone">
+                <div class="btn-content">
+                    <div class="icon-box">
+                        <i class="fas fa-hamburger"></i>
+                    </div>
+                    <span class="zone-label">Hawally Zone</span>
+                </div>
+            </button>
+            
+            <!-- Sabha Al Salem Button -->
+            <button class="premium-btn btn-sabha" 
+                    data-zone="Sabha Al Salem" 
+                    data-icon="coffee"
+                    data-link="salem.html"
+                    aria-label="Select Sabha Al Salem">
+                <div class="btn-content">
+                    <div class="icon-box">
+                        <i class="fas fa-coffee"></i>
+                    </div>
+                    <span class="zone-label">Sabha Al Salem</span>
+                </div>
+            </button>
+            
+            <!-- Al Jahrah Zone Button -->
+            <button class="premium-btn btn-jahrah" 
+                    data-zone="Al Jahrah Zone" 
+                    data-icon="fish"
+                    data-link="jahra.html"
+                    aria-label="Select Al Jahrah Zone">
+                <div class="btn-content">
+                    <div class="icon-box">
+                        <i class="fas fa-fish"></i>
+                    </div>
+                    <span class="zone-label">Al Jahrah Zone</span>
+                </div>
+            </button>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>Powered by <i class="fas fa-heart" style="color: #ff6b6b;"></i> | 
+           <a href="https://livemode1.blogspot.com/p/gpssetter-app-overview-summary.html?m=1" target="_blank" rel="noopener">Gps Setter</a>
+        </p>
+    </footer>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay" aria-hidden="true">
+        <div class="loader" role="progressbar" aria-label="Loading">
+            <div class="loader-circle"></div>
+            <div class="loader-circle"></div>
+            <div class="loader-circle"></div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        /**
+         * Kuwait Zone Selector - Main Application
+         * Premium interactive zone selector with smooth animations
+         */
+
+        // Configuration Object - Easy to customize
+        const CONFIG = {
+            animationDuration: 800,
+            randomLoadingTime: true,
+            hapticFeedback: true,
+            enableParallax: true
+            // 👉 notificationDuration and zones properties removed
+        };
+
+        // DOM Elements
+        const elements = {
+            buttons: document.querySelectorAll('.premium-btn'),
+            loadingOverlay: document.getElementById('loadingOverlay'),
+            orbs: document.querySelectorAll('.bg-orb')
+            // 👉 notification and notificationText properties removed
+        };
+
+        /**
+         * Initialize the application
+         */
+        function init() {
+            setupEventListeners();
+            setupPerformanceOptimizations();
+            setupDeviceFeatures();
+            console.log('🚀 Kuwait Zone Selector initialized');
+        }
+
+        /**
+         * Setup all event listeners
+         */
+        function setupEventListeners() {
+            elements.buttons.forEach(button => {
+                // Click events
+                button.addEventListener('click', handleButtonClick);
+                
+                // Touch events for mobile
+                button.addEventListener('touchstart', handleTouchStart);
+                button.addEventListener('touchend', handleTouchEnd);
+                
+                // Keyboard accessibility
+                button.addEventListener('keydown', handleKeyDown);
+            });
+
+            // Prevent zoom on double tap
+            document.addEventListener('touchend', preventDoubleTapZoom);
+        }
+
+        /**
+         * Handle button click events - SIMPLIFIED VERSION
+         */
+        function handleButtonClick(event) {
+            const button = event.currentTarget;
+            
+            // Get the link from the button's data attribute
+            const link = button.getAttribute('data-link');
+            
+            // Create ripple effect
+            createRipple(button, event);
+            
+            // Haptic feedback
+            if (CONFIG.hapticFeedback && navigator.vibrate) {
+                navigator.vibrate([50, 30, 50]);
+            }
+            
+            // Show loading
+            showLoading();
+            
+            // Calculate loading time
+            const loadingTime = CONFIG.randomLoadingTime 
+                ? CONFIG.animationDuration + Math.random() * 700 
+                : CONFIG.animationDuration;
+            
+            // Simulate loading and redirect
+            setTimeout(() => {
+                hideLoading();
+                
+                // Redirect to the link directly
+                if (link) {
+                    window.location.href = link;
+                }
+            }, loadingTime);
+        }
+
+        /**
+         * Handle touch start for mobile feedback
+         */
+        function handleTouchStart(event) {
+            const button = event.currentTarget;
+            button.style.transition = 'none';
+            button.style.transform = 'translateY(-8px) scale(0.96)';
+        }
+
+        /**
+         * Handle touch end for mobile feedback
+         */
+        function handleTouchEnd(event) {
+            const button = event.currentTarget;
+            button.style.transition = 'all 0.4s cubic-bezier(0.23, 1, 0.320, 1)';
+            button.style.transform = '';
+        }
+
+        /**
+         * Handle keyboard events for accessibility
+         */
+        function handleKeyDown(event) {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                event.currentTarget.click();
+            }
+        }
+
+        /**
+         * Create ripple effect on button
+         */
+        function createRipple(button, event) {
+            const ripple = document.createElement('span');
+            ripple.className = 'ripple';
+            
+            const rect = button.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            const x = event.clientX - rect.left - size / 2;
+            const y = event.clientY - rect.top - size / 2;
+            
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = x + 'px';
+            ripple.style.top = y + 'px';
+            
+            button.appendChild(ripple);
+            
+            setTimeout(() => {
+                ripple.remove();
+            }, 700);
+        }
+
+        /**
+         * Show loading overlay
+         */
+        function showLoading() {
+            elements.loadingOverlay.classList.add('show');
+            elements.loadingOverlay.setAttribute('aria-hidden', 'false');
+        }
+
+        /**
+         * Hide loading overlay
+         */
+        function hideLoading() {
+            elements.loadingOverlay.classList.remove('show');
+            elements.loadingOverlay.setAttribute('aria-hidden', 'true');
+        }
+
+        /**
+         * Prevent double tap zoom on mobile
+         */
+        function preventDoubleTapZoom(event) {
+            const now = Date.now();
+            if (now - (window.lastTouchEnd || 0) <= 300) {
+                event.preventDefault();
+            }
+            window.lastTouchEnd = now;
+        }
+
+        /**
+         * Setup performance optimizations
+         */
+        function setupPerformanceOptimizations() {
+            // Intersection Observer for lazy animations
+            if ('IntersectionObserver' in window) {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.style.animationPlayState = 'running';
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                });
+
+                elements.buttons.forEach(button => {
+                    button.style.animationPlayState = 'paused';
+                    observer.observe(button);
+                });
+            }
+        }
+
+        /**
+         * Setup device-specific features
+         */
+        function setupDeviceFeatures() {
+            // Parallax effect on device tilt
+            if (CONFIG.enableParallax && window.DeviceOrientationEvent) {
+                window.addEventListener('deviceorientation', handleDeviceOrientation);
+            }
+        }
+
+        /**
+         * Handle device orientation for parallax effect
+         */
+        function handleDeviceOrientation(event) {
+            const tiltX = event.gamma / 90;
+            const tiltY = event.beta / 180;
+            
+            elements.orbs.forEach((orb, index) => {
+                const speed = (index + 1) * 10;
+                orb.style.transform = `translate(${tiltX * speed}px, ${tiltY * speed}px)`;
+            });
+        }
+
+        // Initialize when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+
+        // Export for external use if needed
+        window.KuwaitZoneSelector = {
+            CONFIG,
+            showLoading,
+            hideLoading
+        };
+    </script>
+</body>
+</html>
