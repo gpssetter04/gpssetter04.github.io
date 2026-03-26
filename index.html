@@ -3,33 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gps Setter</title>
+    <meta name="description" content="Interactive Kuwait Zone Selector - Premium mobile-first design with smooth animations">
+    <meta name="keywords" content="Kuwait, zones, mobile, interactive, buttons, design">
+    <meta name="author" content="Your Name">
+    <meta property="og:title" content="Kuwait Zone Selector">
+    <meta property="og:description" content="Premium interactive zone selector for Kuwait areas">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#667eea">
     
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <title>Live Mode</title>
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
+        /* ==========================================================================
+           CSS Variables - Easy Customization
+           ========================================================================== */
         :root {
-            --primary-green: #00ff88;
-            --primary-green-rgb: 0, 255, 136;
-            --deep-green: #052c1e;
-            --glass-bg: rgba(255, 255, 255, 0.1);
-            --glass-border: rgba(255, 255, 255, 0.15);
-            --text-color: #e0fff0;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            --shadow-sm: 0 8px 32px rgba(0, 0, 0, 0.3);
-            --shadow-lg: 0 15px 40px rgba(var(--primary-green-rgb), 0.2);
+            /* Primary Colors */
+            --ardiya-primary: #ff6b6b;
+            --ardiya-secondary: #ff8e53;
+            --hawally-primary: #667eea;
+            --hawally-secondary: #764ba2;
+            --sabha-primary: #00b09b;
+            --sabha-secondary: #96c93d;
+            --jahrah-primary: #fa709a;
+            --jahrah-secondary: #fee140;
             
-            /* Dynamic colors will be set via JS */
-            --dynamic-color-1: 0, 255, 136;
-            --dynamic-color-2: 0, 168, 107;
-            --dynamic-color-3: 57, 255, 20;
+            /* Background Colors */
+            --bg-primary: #0f0c29;
+            --bg-secondary: #24243e;
+            --bg-tertiary: #302b63;
+            
+            /* Typography */
+            --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --header-size: 2rem;
+            --text-size: 0.95rem;
+            --button-text-size: 0.9rem;
+            
+            /* Spacing */
+            --container-padding: 20px;
+            --button-gap: 20px;
+            --border-radius: 25px;
+            
+            /* Animation */
+            --animation-speed: 0.4s;
+            --animation-curve: cubic-bezier(0.23, 1, 0.320, 1);
         }
 
+        /* ==========================================================================
+           Reset & Base Styles
+           ========================================================================== */
         * {
             margin: 0;
             padding: 0;
@@ -39,621 +73,754 @@
 
         body {
             min-height: 100vh;
-            font-family: 'Inter', sans-serif;
-            color: var(--text-color);
-            display: flex;
-            flex-direction: column;
-            opacity: 1;
-            animation: fadeIn 0.5s ease;
+            background: var(--bg-primary);
+            background: linear-gradient(to bottom, var(--bg-secondary), var(--bg-tertiary), var(--bg-primary));
+            font-family: var(--font-family);
+            overflow-x: hidden;
             position: relative;
-            background: #020d0a; /* Fallback */
+            color: white;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        /* Dynamic Background Canvas */
-        #dynamic-bg {
+        /* ==========================================================================
+           Animated Background
+           ========================================================================== */
+        .bg-orb {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
-            display: block;
-        }
-
-        /* Animated orbs layer */
-        .bg-visuals {
-            position: fixed;
-            inset: 0;
-            z-index: -1;
-            overflow: hidden;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            animation: float 20s infinite ease-in-out;
             pointer-events: none;
         }
 
-        .orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(100px);
-            opacity: 0.4;
-            animation: float 20s infinite ease-in-out;
-            will-change: transform;
-            transition: background-color 3s ease;
+        .orb1 {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, var(--hawally-primary), var(--hawally-secondary));
+            top: -150px;
+            left: -150px;
+            animation-delay: 0s;
         }
 
-        .orb-1 { 
-            width: min(500px, 80vw); 
-            height: min(500px, 80vw); 
-            top: -10%; 
-            left: -10%; 
-            background: rgba(var(--dynamic-color-1), 0.6);
+        .orb2 {
+            width: 250px;
+            height: 250px;
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            bottom: -125px;
+            right: -125px;
+            animation-delay: 5s;
         }
-        
-        .orb-2 { 
-            width: min(400px, 70vw); 
-            height: min(400px, 70vw); 
-            bottom: -10%; 
-            right: -10%; 
-            animation-delay: -5s;
-            background: rgba(var(--dynamic-color-2), 0.6);
-        }
-        
-        .orb-3 { 
-            width: min(350px, 60vw); 
-            height: min(350px, 60vw); 
-            top: 40%; 
-            left: 60%; 
-            animation-delay: -10s;
-            background: rgba(var(--dynamic-color-3), 0.6);
-        }
-        
-        .orb-4 { 
-            width: min(300px, 50vw); 
-            height: min(300px, 50vw); 
-            top: 60%; 
-            left: 20%; 
-            animation-delay: -3s;
-            background: rgba(var(--dynamic-color-1), 0.5);
-        }
-        
-        .orb-5 { 
-            width: min(450px, 75vw); 
-            height: min(450px, 75vw); 
-            top: 20%; 
-            right: 15%; 
-            animation-delay: -7s;
-            background: rgba(var(--dynamic-color-2), 0.5);
+
+        .orb3 {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-delay: 10s;
         }
 
         @keyframes float {
             0%, 100% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(2%, 4%) scale(1.1); }
+            25% { transform: translate(50px, -50px) scale(1.1); }
+            50% { transform: translate(-30px, 30px) scale(0.9); }
+            75% { transform: translate(30px, 50px) scale(1.05); }
         }
 
-        /* Header */
+        /* ==========================================================================
+           Header Section
+           ========================================================================== */
         .header {
             text-align: center;
-            padding: clamp(30px, 8vw, 50px) 20px 30px;
+            padding: 40px var(--container-padding) 30px;
             position: relative;
-            z-index: 1;
+            z-index: 10;
         }
 
         .header h1 {
-            font-size: clamp(2rem, 6vw, 2.8rem);
+            font-size: var(--header-size);
             font-weight: 800;
-            letter-spacing: -0.02em;
-            background: linear-gradient(135deg, #fff, var(--primary-green));
+            background: linear-gradient(135deg, var(--hawally-primary), var(--hawally-secondary), #f093fb);
             -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             background-clip: text;
-            color: transparent;
-            text-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-            margin-bottom: 0.5rem;
+            margin-bottom: 10px;
+            animation: glow 3s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.2); }
         }
 
         .header p {
-            font-size: clamp(0.9rem, 3vw, 1.1rem);
-            opacity: 0.9;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: var(--text-size);
             font-weight: 400;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
         }
 
-        /* Main container */
+        /* ==========================================================================
+           Main Container
+           ========================================================================== */
         .main-container {
-            flex: 1;
-            padding: 20px;
-            max-width: min(600px, 95%);
+            padding: 0 var(--container-padding) 40px;
+            max-width: 500px;
             margin: 0 auto;
-            width: 100%;
             position: relative;
-            z-index: 1;
+            z-index: 10;
         }
 
+        /* ==========================================================================
+           Button Grid - Responsive Design
+           ========================================================================== */
         .button-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--button-gap);
+            margin-bottom: 30px;
         }
 
-        /* Glass button */
+        /* ==========================================================================
+           Premium Button Component
+           ========================================================================== */
         .premium-btn {
             position: relative;
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            padding: clamp(20px, 5vw, 30px) 15px;
+            aspect-ratio: 1;
+            border: none;
+            border-radius: var(--border-radius);
             cursor: pointer;
-            backdrop-filter: blur(25px) saturate(180%);
-            -webkit-backdrop-filter: blur(25px) saturate(180%);
             display: flex;
             flex-direction: column;
+            justify-content: center;
             align-items: center;
-            gap: 15px;
-            transition: var(--transition);
-            box-shadow: var(--shadow-sm);
-            color: inherit;
-            font-family: inherit;
-            font-size: 1rem;
-            width: 100%;
-            text-decoration: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            font-weight: 600;
+            font-size: var(--button-text-size);
+            overflow: hidden;
+            transition: all var(--animation-speed) var(--animation-curve);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            animation: slideIn 0.6s var(--animation-curve) forwards;
+            opacity: 0;
+            transform: translateY(30px) scale(0.9);
         }
 
-        .premium-btn:focus-visible {
-            outline: 3px solid var(--primary-green);
-            outline-offset: 3px;
-        }
+        .premium-btn:nth-child(1) { animation-delay: 0.1s; }
+        .premium-btn:nth-child(2) { animation-delay: 0.2s; }
+        .premium-btn:nth-child(3) { animation-delay: 0.3s; }
+        .premium-btn:nth-child(4) { animation-delay: 0.4s; }
 
-        .premium-btn:hover {
-            transform: translateY(-5px);
-            background: rgba(255, 255, 255, 0.2);
-            border-color: white;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
-        }
-
-        .premium-btn:active {
-            transform: scale(0.97);
-        }
-
-        @media (hover: none) {
-            .premium-btn:hover {
-                transform: none;
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
             }
         }
 
-        .icon-box {
-            width: min(65px, 15vw);
-            height: min(65px, 15vw);
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: clamp(1.5rem, 5vw, 2rem);
-            color: white;
-            transition: var(--transition);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-
-        .premium-btn:hover .icon-box {
-            background: var(--primary-green);
-            color: #000;
-            transform: rotate(8deg) scale(1.05);
-            box-shadow: 0 0 30px var(--primary-green);
-        }
-
-        .zone-label {
-            font-weight: 600;
-            font-size: clamp(0.9rem, 3vw, 1rem);
-            color: #fff;
-            letter-spacing: 0.02em;
-            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-        }
-
-        /* Loader */
-        .loading-overlay {
-            position: fixed;
+        /* Glass effect overlay */
+        .premium-btn::before {
+            content: '';
+            position: absolute;
             inset: 0;
-            background: rgba(2, 13, 10, 0.95);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .loading-overlay.active {
-            opacity: 1;
-        }
-
-        .loader {
-            width: 50px;
-            height: 50px;
-            border: 3px solid rgba(255, 255, 255, 0.1);
-            border-top-color: var(--primary-green);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            will-change: transform;
-        }
-
-        .loader-text {
-            margin-top: 20px;
-            font-size: 1rem;
-            color: white;
-            text-align: center;
-            opacity: 0.9;
-        }
-
-        @keyframes spin { 
-            to { transform: rotate(360deg); } 
-        }
-
-        /* Footer */
-        .footer {
-            padding: 30px 20px;
-            text-align: center;
-            font-size: 0.95rem;
-            opacity: 0.9;
-            line-height: 1.6;
-            position: relative;
-            z-index: 1;
-        }
-
-        .footer a {
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
-            transition: opacity 0.3s ease;
-            display: inline-block;
-            padding: 5px 10px;
-            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-        }
-
-        .footer a:hover {
-            opacity: 0.8;
-            text-decoration: underline;
-        }
-
-        .footer i {
-            color: #ff4d4d;
-            margin: 0 2px;
-        }
-
-        /* Color indicator (optional - remove if not wanted) */
-        .color-indicator {
-            position: fixed;
-            bottom: 10px;
-            left: 10px;
-            background: rgba(0, 0, 0, 0.5);
-            color: white;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            backdrop-filter: blur(5px);
-            z-index: 100;
-            opacity: 0.5;
+            border-radius: var(--border-radius);
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.3), rgba(255,255,255,0.1));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
             pointer-events: none;
         }
 
-        @media (prefers-reduced-motion: reduce) {
-            *,
-            *::before,
-            *::after {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-                scroll-behavior: auto !important;
+        /* Button content wrapper */
+        .btn-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            padding: 20px;
+        }
+
+        /* Icon container with effects */
+        .icon-box {
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .icon-box::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+
+        .premium-btn:hover .icon-box::before,
+        .premium-btn:active .icon-box::before {
+            transform: translateX(100%);
+        }
+
+        .premium-btn:hover .icon-box,
+        .premium-btn:active .icon-box {
+            transform: scale(1.1) rotate(5deg);
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .premium-btn i {
+            font-size: 2rem;
+            transition: all 0.3s ease;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        }
+
+        .premium-btn:hover i,
+        .premium-btn:active i {
+            transform: scale(1.1);
+        }
+
+        .zone-label {
+            font-size: var(--button-text-size);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        /* ==========================================================================
+           Individual Zone Button Styles
+           ========================================================================== */
+        .btn-ardiya {
+            background: linear-gradient(135deg, 
+                rgba(255, 107, 107, 0.8), 
+                rgba(255, 142, 83, 0.8));
+            box-shadow: 0 8px 32px rgba(255, 107, 107, 0.3);
+        }
+
+        .btn-ardiya:hover,
+        .btn-ardiya:active {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(255, 107, 107, 0.5);
+        }
+
+        .btn-hawally {
+            background: linear-gradient(135deg, 
+                rgba(102, 126, 234, 0.8), 
+                rgba(118, 75, 162, 0.8));
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-hawally:hover,
+        .btn-hawally:active {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.5);
+        }
+
+        .btn-sabha {
+            background: linear-gradient(135deg, 
+                rgba(0, 176, 155, 0.8), 
+                rgba(150, 201, 61, 0.8));
+            box-shadow: 0 8px 32px rgba(0, 176, 155, 0.3);
+        }
+
+        .btn-sabha:hover,
+        .btn-sabha:active {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(0, 176, 155, 0.5);
+        }
+
+        .btn-jahrah {
+            background: linear-gradient(135deg, 
+                rgba(250, 112, 154, 0.8), 
+                rgba(254, 225, 64, 0.8));
+            box-shadow: 0 8px 32px rgba(250, 112, 154, 0.3);
+        }
+
+        .btn-jahrah:hover,
+        .btn-jahrah:active {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(250, 112, 154, 0.5);
+        }
+
+        /* ==========================================================================
+           Loading Overlay
+           ========================================================================== */
+        .loading-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .loading-overlay.show {
+            display: flex;
+        }
+
+        .loader {
+            width: 60px;
+            height: 60px;
+            position: relative;
+        }
+
+        .loader-circle {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 3px solid transparent;
+            border-top-color: var(--hawally-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .loader-circle:nth-child(2) {
+            width: 80%;
+            height: 80%;
+            top: 10%;
+            left: 10%;
+            border-top-color: var(--hawally-secondary);
+            animation-duration: 0.8s;
+            animation-direction: reverse;
+        }
+
+        .loader-circle:nth-child(3) {
+            width: 60%;
+            height: 60%;
+            top: 20%;
+            left: 20%;
+            border-top-color: #f093fb;
+            animation-duration: 0.6s;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ==========================================================================
+           Ripple Effect
+           ========================================================================== */
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.6);
+            transform: scale(0);
+            animation: rippleEffect 0.7s ease-out;
+            pointer-events: none;
+        }
+
+        @keyframes rippleEffect {
+            to {
+                transform: scale(4);
+                opacity: 0;
             }
         }
 
-        @media (max-width: 400px) {
-            .button-grid { 
-                grid-template-columns: 1fr; 
-            }
-            
-            .premium-btn {
-                flex-direction: row;
-                justify-content: center;
-                padding: 15px;
-            }
-            
-            .icon-box {
-                width: 50px;
-                height: 50px;
-                font-size: 1.5rem;
-            }
-        }
-
-        @media (orientation: landscape) and (max-height: 500px) {
-            .header {
-                padding: 20px;
+        /* ==========================================================================
+           Responsive Design
+           ========================================================================== */
+        @media (max-width: 480px) {
+            :root {
+                --header-size: 1.8rem;
+                --container-padding: 15px;
+                --button-gap: 15px;
+                --border-radius: 20px;
             }
             
             .button-grid {
-                grid-template-columns: repeat(4, 1fr);
+                grid-template-columns: 1fr 1fr;
+                gap: 15px;
             }
+            
+            .icon-box {
+                width: 60px;
+                height: 60px;
+            }
+            
+            .premium-btn i {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .button-grid {
+                grid-template-columns: repeat(4, 1fr);
+                max-width: 800px;
+                margin: 0 auto 30px;
+            }
+            
+            .premium-btn {
+                aspect-ratio: 1.2;
+            }
+        }
+
+        /* ==========================================================================
+           Safe Area Support (Notched Phones)
+           ========================================================================== */
+        @supports (padding: max(0px)) {
+            .main-container {
+                padding-left: max(var(--container-padding), env(safe-area-inset-left));
+                padding-right: max(var(--container-padding), env(safe-area-inset-right));
+                padding-bottom: max(40px, env(safe-area-inset-bottom));
+            }
+        }
+
+        /* ==========================================================================
+           Touch Feedback
+           ========================================================================== */
+        .premium-btn:active {
+            transform: translateY(-8px) scale(0.98);
+        }
+
+        /* ==========================================================================
+           Footer (Optional)
+           ========================================================================== */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.85rem;
+        }
+
+        .footer a {
+            color: var(--hawally-primary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: var(--hawally-secondary);
         }
     </style>
 </head>
 <body>
+    <!-- Animated Background Orbs -->
+    <div class="bg-orb orb1"></div>
+    <div class="bg-orb orb2"></div>
+    <div class="bg-orb orb3"></div>
 
-    <!-- Dynamic Canvas Background -->
-    <canvas id="dynamic-bg"></canvas>
-
-    <!-- Animated Orbs Layer -->
-    <div class="bg-visuals" aria-hidden="true">
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-        <div class="orb orb-3"></div>
-        <div class="orb orb-4"></div>
-        <div class="orb orb-5"></div>
-    </div>
-
+    <!-- Header Section -->
     <header class="header">
         <h1>Select Your Zone</h1>
-        <p>And get more better experience</p>
+        <p>Welcome to your Area.</p>
     </header>
 
+    <!-- Main Content -->
     <main class="main-container">
-        <div class="button-grid" role="list">
-            <button class="premium-btn" onclick="navigateTo('ardiya.html')" aria-label="Navigate to Ardiya Zone">
-                <span class="icon-box" aria-hidden="true"><i class="fas fa-pizza-slice"></i></span>
-                <span class="zone-label">Ardiya Zone</span>
+        <div class="button-grid">
+            <!-- Ardiya Zone Button -->
+            <button class="premium-btn btn-ardiya" 
+                    data-zone="Ardiya Zone" 
+                    data-icon="pizza-slice"
+                    data-link="ardiya.html"
+                    aria-label="Select Ardiya Zone">
+                <div class="btn-content">
+                    <div class="icon-box">
+                        <i class="fas fa-pizza-slice"></i>
+                    </div>
+                    <span class="zone-label">Ardiya Zone</span>
+                </div>
             </button>
             
-            <button class="premium-btn" onclick="navigateTo('hawally.html')" aria-label="Navigate to Hawally Zone">
-                <span class="icon-box" aria-hidden="true"><i class="fas fa-hamburger"></i></span>
-                <span class="zone-label">Hawally Zone</span>
+            <!-- Hawally Zone Button -->
+            <button class="premium-btn btn-hawally" 
+                    data-zone="Hawally Zone" 
+                    data-icon="hamburger"
+                    data-link="hawally.html"
+                    aria-label="Select Hawally Zone">
+                <div class="btn-content">
+                    <div class="icon-box">
+                        <i class="fas fa-hamburger"></i>
+                    </div>
+                    <span class="zone-label">Hawally Zone</span>
+                </div>
             </button>
             
-            <button class="premium-btn" onclick="navigateTo('salem.html')" aria-label="Navigate to Sabha Al Salem Zone">
-                <span class="icon-box" aria-hidden="true"><i class="fas fa-coffee"></i></span>
-                <span class="zone-label">Sabha Al Salem</span>
+            <!-- Sabha Al Salem Button -->
+            <button class="premium-btn btn-sabha" 
+                    data-zone="Sabha Al Salem" 
+                    data-icon="coffee"
+                    data-link="salem.html"
+                    aria-label="Select Sabha Al Salem">
+                <div class="btn-content">
+                    <div class="icon-box">
+                        <i class="fas fa-coffee"></i>
+                    </div>
+                    <span class="zone-label">Sabha Al Salem</span>
+                </div>
             </button>
             
-            <button class="premium-btn" onclick="navigateTo('jahra.html')" aria-label="Navigate to Al Jahrah Zone">
-                <span class="icon-box" aria-hidden="true"><i class="fas fa-fish"></i></span>
-                <span class="zone-label">Al Jahrah Zone</span>
+            <!-- Al Jahrah Zone Button -->
+            <button class="premium-btn btn-jahrah" 
+                    data-zone="Al Jahrah Zone" 
+                    data-icon="fish"
+                    data-link="jahra.html"
+                    aria-label="Select Al Jahrah Zone">
+                <div class="btn-content">
+                    <div class="icon-box">
+                        <i class="fas fa-fish"></i>
+                    </div>
+                    <span class="zone-label">Al Jahrah Zone</span>
+                </div>
             </button>
         </div>
     </main>
 
+    <!-- Footer -->
     <footer class="footer">
-        <p>Powered by<i class="fas fa-heart" aria-hidden="true"></i></p>
-        <a href="https://github.com/Android1500/GpsSetter" target="_blank" rel="noopener noreferrer">
-            GPS SETTER PREMIUM
-        </a>
+        <p>Powered by <i class="fas fa-heart" style="color: #ff6b6b;"></i> | 
+           <a href="https://livemode1.blogspot.com/p/gpssetter-app-overview-summary.html?m=1" target="_blank" rel="noopener">Gps Setter</a>
+        </p>
     </footer>
 
-    <div class="loading-overlay" id="loader" role="alert" aria-live="assertive">
-        <div>
-            <div class="loader"></div>
-            <div class="loader-text">Loading Zone...</div>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay" aria-hidden="true">
+        <div class="loader" role="progressbar" aria-label="Loading">
+            <div class="loader-circle"></div>
+            <div class="loader-circle"></div>
+            <div class="loader-circle"></div>
         </div>
     </div>
 
-    <!-- Optional: Color indicator (remove if not needed) -->
-    <div class="color-indicator" id="colorIndicator">Color: <span id="colorName">Green</span></div>
-
+    <!-- JavaScript -->
     <script>
-        (function() {
-            'use strict';
-            
-            // Cache DOM elements
-            const loader = document.getElementById('loader');
-            let navigationTimeout;
+        /**
+         * Kuwait Zone Selector - Main Application
+         * Premium interactive zone selector with smooth animations
+         */
 
-            // Navigation function
-            window.navigateTo = function(url) {
-                if (!url || typeof url !== 'string') {
-                    console.error('Invalid navigation URL');
-                    return;
+        // Configuration Object - Easy to customize
+        const CONFIG = {
+            animationDuration: 800,
+            randomLoadingTime: true,
+            hapticFeedback: true,
+            enableParallax: true
+            // 👉 notificationDuration and zones properties removed
+        };
+
+        // DOM Elements
+        const elements = {
+            buttons: document.querySelectorAll('.premium-btn'),
+            loadingOverlay: document.getElementById('loadingOverlay'),
+            orbs: document.querySelectorAll('.bg-orb')
+            // 👉 notification and notificationText properties removed
+        };
+
+        /**
+         * Initialize the application
+         */
+        function init() {
+            setupEventListeners();
+            setupPerformanceOptimizations();
+            setupDeviceFeatures();
+            console.log('🚀 Kuwait Zone Selector initialized');
+        }
+
+        /**
+         * Setup all event listeners
+         */
+        function setupEventListeners() {
+            elements.buttons.forEach(button => {
+                // Click events
+                button.addEventListener('click', handleButtonClick);
+                
+                // Touch events for mobile
+                button.addEventListener('touchstart', handleTouchStart);
+                button.addEventListener('touchend', handleTouchEnd);
+                
+                // Keyboard accessibility
+                button.addEventListener('keydown', handleKeyDown);
+            });
+
+            // Prevent zoom on double tap
+            document.addEventListener('touchend', preventDoubleTapZoom);
+        }
+
+        /**
+         * Handle button click events - SIMPLIFIED VERSION
+         */
+        function handleButtonClick(event) {
+            const button = event.currentTarget;
+            
+            // Get the link from the button's data attribute
+            const link = button.getAttribute('data-link');
+            
+            // Create ripple effect
+            createRipple(button, event);
+            
+            // Haptic feedback
+            if (CONFIG.hapticFeedback && navigator.vibrate) {
+                navigator.vibrate([50, 30, 50]);
+            }
+            
+            // Show loading
+            showLoading();
+            
+            // Calculate loading time
+            const loadingTime = CONFIG.randomLoadingTime 
+                ? CONFIG.animationDuration + Math.random() * 700 
+                : CONFIG.animationDuration;
+            
+            // Simulate loading and redirect
+            setTimeout(() => {
+                hideLoading();
+                
+                // Redirect to the link directly
+                if (link) {
+                    window.location.href = link;
                 }
+            }, loadingTime);
+        }
 
-                if (navigationTimeout) {
-                    clearTimeout(navigationTimeout);
-                }
+        /**
+         * Handle touch start for mobile feedback
+         */
+        function handleTouchStart(event) {
+            const button = event.currentTarget;
+            button.style.transition = 'none';
+            button.style.transform = 'translateY(-8px) scale(0.96)';
+        }
 
-                loader.style.display = 'flex';
-                loader.offsetHeight;
-                loader.classList.add('active');
+        /**
+         * Handle touch end for mobile feedback
+         */
+        function handleTouchEnd(event) {
+            const button = event.currentTarget;
+            button.style.transition = 'all 0.4s cubic-bezier(0.23, 1, 0.320, 1)';
+            button.style.transform = '';
+        }
 
-                try {
-                    if (window.navigator && window.navigator.vibrate) {
-                        window.navigator.vibrate(30);
-                    }
-                } catch (e) {}
+        /**
+         * Handle keyboard events for accessibility
+         */
+        function handleKeyDown(event) {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                event.currentTarget.click();
+            }
+        }
 
-                navigationTimeout = setTimeout(() => {
-                    window.location.href = url;
-                }, 600);
-            };
-
-            // Dynamic Background System
-            const canvas = document.getElementById('dynamic-bg');
-            const ctx = canvas.getContext('2d');
-            const colorIndicator = document.getElementById('colorName');
+        /**
+         * Create ripple effect on button
+         */
+        function createRipple(button, event) {
+            const ripple = document.createElement('span');
+            ripple.className = 'ripple';
             
-            // Color palettes for dynamic changes
-            const colorPalettes = [
-                { name: 'Green', primary: [0, 255, 136], secondary: [0, 168, 107], tertiary: [57, 255, 20] },
-                { name: 'Blue', primary: [0, 150, 255], secondary: [0, 100, 200], tertiary: [100, 200, 255] },
-                { name: 'Purple', primary: [180, 0, 255], secondary: [120, 0, 200], tertiary: [200, 100, 255] },
-                { name: 'Pink', primary: [255, 50, 150], secondary: [200, 0, 100], tertiary: [255, 100, 200] },
-                { name: 'Orange', primary: [255, 150, 0], secondary: [200, 100, 0], tertiary: [255, 200, 50] },
-                { name: 'Cyan', primary: [0, 255, 200], secondary: [0, 200, 150], tertiary: [50, 255, 220] },
-                { name: 'Red', primary: [255, 50, 50], secondary: [200, 0, 0], tertiary: [255, 100, 100] },
-                { name: 'Yellow', primary: [255, 255, 0], secondary: [200, 200, 0], tertiary: [255, 255, 100] },
-                { name: 'Mint', primary: [100, 255, 150], secondary: [50, 200, 100], tertiary: [150, 255, 200] },
-                { name: 'Lavender', primary: [200, 150, 255], secondary: [150, 100, 200], tertiary: [230, 200, 255] }
-            ];
-
-            let currentPaletteIndex = 0;
-            let nextPaletteIndex = 1;
-            let transitionProgress = 0;
-            const transitionSpeed = 0.002; // How fast colors change (lower = slower)
+            const rect = button.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            const x = event.clientX - rect.left - size / 2;
+            const y = event.clientY - rect.top - size / 2;
             
-            // Particles for canvas effect
-            let particles = [];
-            const particleCount = 50;
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = x + 'px';
+            ripple.style.top = y + 'px';
+            
+            button.appendChild(ripple);
+            
+            setTimeout(() => {
+                ripple.remove();
+            }, 700);
+        }
 
-            // Initialize particles
-            function initParticles() {
-                for (let i = 0; i < particleCount; i++) {
-                    particles.push({
-                        x: Math.random() * window.innerWidth,
-                        y: Math.random() * window.innerHeight,
-                        radius: Math.random() * 3 + 1,
-                        speedX: (Math.random() - 0.5) * 0.5,
-                        speedY: (Math.random() - 0.5) * 0.5,
-                        opacity: Math.random() * 0.5 + 0.2
+        /**
+         * Show loading overlay
+         */
+        function showLoading() {
+            elements.loadingOverlay.classList.add('show');
+            elements.loadingOverlay.setAttribute('aria-hidden', 'false');
+        }
+
+        /**
+         * Hide loading overlay
+         */
+        function hideLoading() {
+            elements.loadingOverlay.classList.remove('show');
+            elements.loadingOverlay.setAttribute('aria-hidden', 'true');
+        }
+
+        /**
+         * Prevent double tap zoom on mobile
+         */
+        function preventDoubleTapZoom(event) {
+            const now = Date.now();
+            if (now - (window.lastTouchEnd || 0) <= 300) {
+                event.preventDefault();
+            }
+            window.lastTouchEnd = now;
+        }
+
+        /**
+         * Setup performance optimizations
+         */
+        function setupPerformanceOptimizations() {
+            // Intersection Observer for lazy animations
+            if ('IntersectionObserver' in window) {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.style.animationPlayState = 'running';
+                            observer.unobserve(entry.target);
+                        }
                     });
-                }
-            }
-
-            // Resize canvas
-            function resizeCanvas() {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-            }
-
-            // Update CSS variables for orbs
-            function updateOrbColors(primary, secondary, tertiary) {
-                document.documentElement.style.setProperty('--dynamic-color-1', primary.join(','));
-                document.documentElement.style.setProperty('--dynamic-color-2', secondary.join(','));
-                document.documentElement.style.setProperty('--dynamic-color-3', tertiary.join(','));
-                
-                if (colorIndicator) {
-                    const palette = colorPalettes[currentPaletteIndex];
-                    colorIndicator.textContent = palette.name;
-                }
-            }
-
-            // Interpolate between two colors
-            function interpolateColor(color1, color2, progress) {
-                return [
-                    Math.round(color1[0] + (color2[0] - color1[0]) * progress),
-                    Math.round(color1[1] + (color2[1] - color1[1]) * progress),
-                    Math.round(color1[2] + (color2[2] - color1[2]) * progress)
-                ];
-            }
-
-            // Draw canvas background
-            function drawCanvas() {
-                if (!ctx) return;
-
-                // Clear canvas with slight transparency for trail effect
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-                // Get current colors with transition
-                const currentPalette = colorPalettes[currentPaletteIndex];
-                const nextPalette = colorPalettes[nextPaletteIndex];
-                
-                const primary = interpolateColor(currentPalette.primary, nextPalette.primary, transitionProgress);
-                const secondary = interpolateColor(currentPalette.secondary, nextPalette.secondary, transitionProgress);
-                const tertiary = interpolateColor(currentPalette.tertiary, nextPalette.tertiary, transitionProgress);
-
-                // Update orb colors
-                updateOrbColors(primary, secondary, tertiary);
-
-                // Create gradient background
-                const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-                gradient.addColorStop(0, `rgba(${primary[0]}, ${primary[1]}, ${primary[2]}, 0.1)`);
-                gradient.addColorStop(0.5, `rgba(${secondary[0]}, ${secondary[1]}, ${secondary[2]}, 0.1)`);
-                gradient.addColorStop(1, `rgba(${tertiary[0]}, ${tertiary[1]}, ${tertiary[2]}, 0.1)`);
-                
-                ctx.fillStyle = gradient;
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-                // Draw particles
-                particles.forEach(particle => {
-                    // Update particle position
-                    particle.x += particle.speedX;
-                    particle.y += particle.speedY;
-
-                    // Wrap around screen
-                    if (particle.x < 0) particle.x = canvas.width;
-                    if (particle.x > canvas.width) particle.x = 0;
-                    if (particle.y < 0) particle.y = canvas.height;
-                    if (particle.y > canvas.height) particle.y = 0;
-
-                    // Draw particle
-                    ctx.beginPath();
-                    ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
-                    
-                    // Color particle based on current primary color
-                    const color = interpolateColor(primary, secondary, Math.random());
-                    ctx.fillStyle = `rgba(${color[0]}, ${color[1]}, ${color[2]}, ${particle.opacity})`;
-                    ctx.fill();
                 });
 
-                // Update transition progress
-                transitionProgress += transitionSpeed;
-                
-                if (transitionProgress >= 1) {
-                    transitionProgress = 0;
-                    currentPaletteIndex = nextPaletteIndex;
-                    nextPaletteIndex = (nextPaletteIndex + 1) % colorPalettes.length;
-                }
-
-                requestAnimationFrame(drawCanvas);
-            }
-
-            // Initialize
-            window.addEventListener('load', () => {
-                resizeCanvas();
-                initParticles();
-                drawCanvas();
-            });
-
-            window.addEventListener('resize', () => {
-                resizeCanvas();
-                // Reinitialize particles for new screen size
-                particles = [];
-                initParticles();
-            });
-
-            // Handle page visibility
-            document.addEventListener('visibilitychange', function() {
-                if (document.hidden && navigationTimeout) {
-                    clearTimeout(navigationTimeout);
-                }
-            });
-
-            window.addEventListener('pageshow', function(event) {
-                if (event.persisted) {
-                    if (loader) {
-                        loader.style.display = 'none';
-                        loader.classList.remove('active');
-                    }
-                }
-            });
-
-            // Preload first zone
-            if (window.requestIdleCallback) {
-                requestIdleCallback(() => {
-                    const link = document.createElement('link');
-                    link.rel = 'prefetch';
-                    link.href = 'ardiya.html';
-                    document.head.appendChild(link);
+                elements.buttons.forEach(button => {
+                    button.style.animationPlayState = 'paused';
+                    observer.observe(button);
                 });
             }
+        }
 
-        })();
+        /**
+         * Setup device-specific features
+         */
+        function setupDeviceFeatures() {
+            // Parallax effect on device tilt
+            if (CONFIG.enableParallax && window.DeviceOrientationEvent) {
+                window.addEventListener('deviceorientation', handleDeviceOrientation);
+            }
+        }
+
+        /**
+         * Handle device orientation for parallax effect
+         */
+        function handleDeviceOrientation(event) {
+            const tiltX = event.gamma / 90;
+            const tiltY = event.beta / 180;
+            
+            elements.orbs.forEach((orb, index) => {
+                const speed = (index + 1) * 10;
+                orb.style.transform = `translate(${tiltX * speed}px, ${tiltY * speed}px)`;
+            });
+        }
+
+        // Initialize when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+
+        // Export for external use if needed
+        window.KuwaitZoneSelector = {
+            CONFIG,
+            showLoading,
+            hideLoading
+        };
     </script>
-
-    <noscript>
-        <div style="position:fixed; bottom:20px; left:20px; right:20px; background:#ff4444; color:white; padding:15px; text-align:center; border-radius:10px; z-index:10000;">
-            Please enable JavaScript for the best experience
-        </div>
-    </noscript>
 </body>
 </html>

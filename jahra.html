@@ -3,566 +3,260 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Al Jahra Zone</title>
+  <title>Jahra Zone</title>
   
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
-    /* === ROOT VARIABLES (merged premium theme + original tokens) === */
     :root {
-      /* primary green from premium theme */
-      --primary-green: #00ff88;
-      --primary-green-rgb: 0, 255, 136;
-      --deep-green: #052c1e;
-      --glass-bg: rgba(255, 255, 255, 0.1);
-      --glass-border: rgba(255, 255, 255, 0.15);
-      --text-color: #e0fff0;
-      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      --shadow-sm: 0 8px 32px rgba(0, 0, 0, 0.3);
-      --shadow-lg: 0 15px 40px rgba(var(--primary-green-rgb), 0.2);
-      
-      /* dynamic base (fallback) */
-      --dynamic-color-1: 0, 255, 136;
-      --dynamic-color-2: 0, 168, 107;
-      --dynamic-color-3: 57, 255, 20;
-
-      /* original app tokens (adapted to glass context) */
-      --primary: var(--primary-green);
-      --primary-dark: #00a86b;
+      --primary: #10B981;
+      --primary-dark: #059669;
       --accent: #F59E0B;
       --dark: #111827;
-      --light: #f0fdf4;
-      --white: rgba(255, 255, 255, 0.85);
-      --gray: #cbd5e1;
-      --gray-light: #e2e8f0;
-      
-      /* override light background to match premium dark */
-      --glass-card-bg: rgba(10, 25, 18, 0.6);
+      --dark-light: #374151;
+      --light: #F9FAFB;
+      --white: #FFFFFF;
+      --gray: #9CA3AF;
+      --gray-light: #E5E7EB;
+      --glass-bg: rgba(255, 255, 255, 0.85);
+      --glass-border: rgba(255, 255, 255, 0.4);
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.08);
+      --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
+      --shadow-primary: 0 4px 20px rgba(16, 185, 129, 0.4);
     }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
     body {
-      min-height: 100vh;
       font-family: 'Inter', sans-serif;
-      color: var(--text-color);
-      display: flex;
-      flex-direction: column;
-      opacity: 1;
-      animation: fadeIn 0.5s ease;
-      position: relative;
-      background: #020d0a; /* deep fallback */
+      background: var(--light);
+      color: var(--dark);
+      min-height: 100vh;
       padding-bottom: 100px;
+      position: relative;
       overflow-x: hidden;
     }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    /* === DYNAMIC BACKGROUND CANVAS (moved from premium) === */
-    #dynamic-bg {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -2;
-      display: block;
-      background: radial-gradient(circle at 30% 40%, #052c1e, #02100a);
-    }
-
-    /* animated orbs layer */
-    .bg-visuals {
-      position: fixed;
-      inset: 0;
-      z-index: -1;
-      overflow: hidden;
-      pointer-events: none;
-    }
-
-    .orb {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(100px);
-      opacity: 0.4;
-      animation: float 20s infinite ease-in-out;
-      will-change: transform;
-      transition: background-color 3s ease;
-    }
-
-    .orb-1 { 
-      width: min(500px, 80vw); 
-      height: min(500px, 80vw); 
-      top: -10%; 
-      left: -10%; 
-      background: rgba(var(--dynamic-color-1), 0.6);
-    }
     
-    .orb-2 { 
-      width: min(400px, 70vw); 
-      height: min(400px, 70vw); 
-      bottom: -10%; 
-      right: -10%; 
-      animation-delay: -5s;
-      background: rgba(var(--dynamic-color-2), 0.6);
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: -1;
+      background: 
+        radial-gradient(circle at 10% 90%, rgba(16, 185, 129, 0.08), transparent 40%),
+        radial-gradient(circle at 90% 10%, rgba(245, 158, 11, 0.08), transparent 40%);
+      animation: bgMove 15s ease-in-out infinite alternate;
     }
-    
-    .orb-3 { 
-      width: min(350px, 60vw); 
-      height: min(350px, 60vw); 
-      top: 40%; 
-      left: 60%; 
-      animation-delay: -10s;
-      background: rgba(var(--dynamic-color-3), 0.6);
-    }
-    
-    .orb-4 { 
-      width: min(300px, 50vw); 
-      height: min(300px, 50vw); 
-      top: 60%; 
-      left: 20%; 
-      animation-delay: -3s;
-      background: rgba(var(--dynamic-color-1), 0.5);
-    }
-    
-    .orb-5 { 
-      width: min(450px, 75vw); 
-      height: min(450px, 75vw); 
-      top: 20%; 
-      right: 15%; 
-      animation-delay: -7s;
-      background: rgba(var(--dynamic-color-2), 0.5);
-    }
+    @keyframes bgMove { from { background-size: 100% 100%; } to { background-size: 120% 120%; } }
 
-    @keyframes float {
-      0%, 100% { transform: translate(0, 0) scale(1); }
-      50% { transform: translate(2%, 4%) scale(1.1); }
-    }
-
-    /* === HEADER (premium glass) === */
-    .header {
-      text-align: center;
-      padding: clamp(20px, 6vw, 40px) 20px 20px;
-      position: relative;
-      z-index: 5;
-    }
-
-    .header h1 {
-      font-size: clamp(2rem, 6vw, 2.8rem);
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      background: linear-gradient(135deg, #fff, var(--primary-green));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      text-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-      margin-bottom: 0.5rem;
-    }
-
-    .header p {
-      font-size: clamp(0.9rem, 3vw, 1.1rem);
-      opacity: 0.9;
-      font-weight: 400;
-      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-    }
-
-    /* keep original header but reposition */
     header {
-      position: sticky; 
-      top: 0; 
-      z-index: 100;
-      background: transparent; 
-      backdrop-filter: blur(16px) saturate(180%);
-      -webkit-backdrop-filter: blur(16px) saturate(180%);
+      position: sticky; top: 0; z-index: 100;
+      background: var(--glass-bg);
+      backdrop-filter: blur(12px);
       padding: 12px 16px;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
     }
-
-    .search-wrapper { 
-      position: relative; 
-      width: 100%; 
-      max-width: 600px; 
-      margin: 0 auto; 
-    }
-
+    .search-wrapper { position: relative; width: 100%; }
     #searchInput {
-      width: 100%; 
-      padding: 14px 44px 14px 20px;
-      border-radius: 40px; 
-      border: 1px solid rgba(255,255,255,0.25);
-      background: rgba(0, 20, 12, 0.6);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      font-size: 15px;
-      color: white;
-      box-shadow: var(--shadow-sm); 
-      transition: all .3s;
+      width: 100%; padding: 12px 40px 12px 16px;
+      border-radius: 16px; 
+      border: 1px solid #000000;
+      background: var(--white); font-size: 15px;
+      box-shadow: var(--shadow-sm); transition: all .3s;
     }
-    #searchInput::placeholder { color: rgba(255,255,255,0.6); }
-    #searchInput:focus { 
-      border-color: var(--primary-green); 
-      box-shadow: 0 0 0 3px rgba(0,255,136,0.2); 
-      outline: none; 
-      background: rgba(0, 40, 20, 0.7);
-    }
-
+    #searchInput:focus { border-color: var(--primary); box-shadow: var(--shadow-primary); outline: none; }
     #clearSearch {
-      position: absolute; 
-      right: 16px; 
-      top: 50%; 
-      transform: translateY(-50%);
-      background: rgba(255,255,255,0.2); 
-      border: none; 
-      color: white;
-      width: 28px; 
-      height: 28px; 
-      border-radius: 50%; 
-      cursor: pointer;
-      display: none; 
-      align-items: center; 
-      justify-content: center;
-      backdrop-filter: blur(5px);
+      position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+      background: var(--gray-light); border: none; color: var(--gray);
+      width: 24px; height: 24px; border-radius: 50%; cursor: pointer;
+      display: none; align-items: center; justify-content: center;
     }
     #clearSearch.visible { display: flex; }
 
-    /* main container */
-    main { 
-      flex: 1;
-      padding: 16px; 
-      max-width: min(700px, 95%);
-      margin: 0 auto; 
-      width: 100%;
-      position: relative;
-      z-index: 2;
-    }
-
-    /* welcome screen with premium touch */
-    #welcomeScreen {
-      display: flex; 
-      flex-direction: column; 
-      align-items: center; 
-      justify-content: center;
-      height: 60vh; 
-      text-align: center; 
-      animation: fadeIn .6s ease;
-    }
-    .icon-large { 
-      font-size: 64px; 
-      color: var(--primary-green); 
-      margin-bottom: 16px; 
-      animation: float 3s ease-in-out infinite;
-      text-shadow: 0 0 30px var(--primary-green);
-    }
+    main { padding: 16px; max-width: 800px; margin: 0 auto; }
     
-    .loading-dots { display: flex; gap: 8px; margin-top: 20px; justify-content: center; }
-    .dot { 
-      width: 10px; 
-      height: 10px; 
-      background: var(--primary-green); 
-      border-radius: 50%; 
-      animation: bounce 1.4s infinite;
-      box-shadow: 0 0 15px var(--primary-green);
+    #welcomeScreen {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      height: 60vh; text-align: center; animation: fadeIn .6s ease;
     }
-    .dot:nth-child(2) { animation-delay: .2s; } 
-    .dot:nth-child(3) { animation-delay: .4s; }
-    @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+    .icon-large { font-size: 48px; color: var(--primary); margin-bottom: 16px; animation: float 3s ease-in-out infinite; }
+    @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    .loading-dots { display: flex; gap: 4px; margin-top: 10px; justify-content: center; }
+    .dot { width: 6px; height: 6px; background: var(--primary); border-radius: 50%; animation: bounce 1.4s infinite; }
+    .dot:nth-child(2) { animation-delay: .2s; } .dot:nth-child(3) { animation-delay: .4s; }
+    @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
 
-    /* skeleton loader premium */
-    #skeletonLoader { 
-      display: none; 
-      gap: 16px; 
-      grid-template-columns: 1fr;
-    }
+    #skeletonLoader { display: none; gap: 12px; }
     .skeleton {
-      background: rgba(255,255,255,0.08);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 28px; 
-      padding: 24px 16px;
-      animation: pulse 1.8s infinite;
+      background: var(--gray-light); border-radius: 12px; padding: 16px;
+      animation: pulse 1.5s infinite;
+      border: 1px solid #e5e7eb;
     }
-    .sk-line { 
-      height: 14px; 
-      margin-bottom: 10px; 
-      border-radius: 20px; 
-      background: rgba(255,255,255,0.15); 
-    }
-    .sk-title { width: 60%; height: 22px; margin: 0 auto 16px; }
-    @keyframes pulse { 0% { opacity: 0.7; } 50% { opacity: 0.3; } 100% { opacity: 0.7; } }
+    .sk-line { height: 12px; margin-bottom: 8px; border-radius: 4px; background: #e2e8f0; }
+    .sk-title { width: 60%; height: 18px; margin-bottom: 12px; margin-left: auto; margin-right: auto; }
+    @keyframes pulse { 0% { opacity: 1; } 50% { opacity: .6; } 100% { opacity: 1; } }
 
-    #locationList { 
-      display: none; 
-      grid-template-columns: 1fr; 
-      gap: 16px; 
-    }
-
-    /* === PREMIUM GLASS CARD (merged with original card) === */
+    #locationList { display: none; grid-template-columns: 1fr; gap: 12px; }
+    
     .card {
-      background: var(--glass-card-bg);
-      backdrop-filter: blur(25px) saturate(180%);
-      -webkit-backdrop-filter: blur(25px) saturate(180%);
-      border: 1px solid var(--glass-border);
-      border-radius: 28px; 
-      padding: 20px 16px;
+      background: var(--white); border-radius: 16px; padding: 16px;
       box-shadow: var(--shadow-sm); 
-      position: relative; 
-      overflow: visible; 
-      transition: var(--transition);
+      border: 1px solid #000000;
+      position: relative; overflow: visible; 
+      transition: transform .2s;
       text-align: center;
-      color: white;
     }
-    .card:hover {
-      transform: translateY(-4px);
-      background: rgba(20, 50, 35, 0.7);
-      border-color: rgba(255,255,255,0.3);
-      box-shadow: var(--shadow-lg);
-    }
-    .card.nearby { 
-      border-color: var(--primary-green); 
-      box-shadow: 0 0 20px rgba(var(--primary-green-rgb), 0.4);
-    }
+    .card.nearby { border-color: var(--primary); box-shadow: 0 0 0 2px var(--primary); }
     
     .card-header { 
       display: flex; 
       justify-content: center; 
       position: relative; 
-      margin-bottom: 16px; 
+      margin-bottom: 12px; 
+      width: 100%;
     }
     .card-title { 
       font-weight: 700; 
-      font-size: 18px; 
-      color: white; 
+      font-size: 16px; 
+      color: var(--dark); 
       width: 100%; 
-      padding-right: 36px; 
+      padding-right: 30px; 
       text-align: center; 
-      margin: 0 auto;
-      text-shadow: 0 2px 5px black;
+      margin: 0 auto; 
     }
     
     .fav-btn {
-      position: absolute; top: -6px; right: -4px;
-      background: rgba(255,255,255,0.1); 
-      border: 1px solid rgba(255,255,255,0.2);
-      backdrop-filter: blur(10px);
-      color: rgba(255,255,255,0.7); 
-      font-size: 18px; 
-      cursor: pointer; 
-      transition: .2s;
-      padding: 8px; 
-      border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      position: absolute; top: 0; right: 0;
+      background: none; border: none; color: var(--gray-light); font-size: 18px; cursor: pointer; transition: .2s;
+      padding: 5px; 
+      z-index: 2;
     }
-    .fav-btn.active { 
-      color: var(--accent); 
-      background: rgba(245,158,11,0.2);
-      border-color: var(--accent);
-      transform: scale(1.1); 
-    }
+    .fav-btn.active { color: var(--accent); transform: scale(1.1); }
 
     .card-body { 
       display: flex; 
       flex-direction: column; 
       align-items: center; 
-      gap: 14px; 
+      gap: 8px; 
+      position: relative; 
     }
     
     .badges { 
       display: flex; 
       justify-content: center; 
-      gap: 12px; 
+      gap: 8px; 
       flex-wrap: wrap; 
+      width: 100%;
     }
     .badge {
-      font-size: 12px; 
-      padding: 6px 16px; 
-      border-radius: 40px; 
-      font-weight: 600;
-      background: rgba(255,255,255,0.08);
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(255,255,255,0.15);
-      color: white;
+      font-size: 11px; padding: 4px 8px; border-radius: 12px; font-weight: 600;
+      display: flex; align-items: center; gap: 4px;
     }
-    .badge-dist { background: rgba(0, 255, 136, 0.15); color: #ccffdd; }
-    .badge-time { background: rgba(245, 158, 11, 0.15); color: #ffe0b0; }
+    .badge-dist { background: rgba(16, 185, 129, 0.1); color: var(--primary-dark); }
+    .badge-time { background: rgba(245, 158, 11, 0.1); color: #d97706; }
 
-    /* premium copy button */
     .copy-btn {
-      margin-top: 4px; 
-      padding: 10px 28px; 
-      background: rgba(255,255,255,0.12);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(255,255,255,0.25);
-      color: white; 
-      border-radius: 40px; 
-      font-size: 13px; 
-      font-weight: 600; 
+      margin-top: 6px; 
+      padding: 6px 24px; 
+      background: var(--dark); 
+      color: var(--white); 
+      border: none;
+      border-radius: 8px; 
+      font-size: 11px; 
+      font-weight: 500; 
       cursor: pointer;
       display: inline-flex; 
       align-items: center; 
-      gap: 8px;
-      transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      justify-content: center; 
+      gap: 5px;
+      transition: background .2s, transform .1s;
+      width: auto; 
+      position: relative; 
+      z-index: 1;
     }
-    .copy-btn:active { transform: scale(0.94); background: var(--primary-green); color: black; }
-    .copy-btn:hover { background: rgba(0,255,136,0.3); border-color: var(--primary-green); }
+    .copy-btn:active { transform: scale(0.95); }
+    .copy-btn:hover { background: var(--primary); }
 
-    .empty-state { 
-      text-align: center; 
-      padding: 60px 20px; 
-      color: rgba(255,255,255,0.6); 
-      grid-column: 1/-1;
-      background: rgba(0,0,0,0.2);
-      border-radius: 40px;
-      backdrop-filter: blur(12px);
-    }
+    .empty-state { text-align: center; padding: 40px; color: var(--gray); grid-column: 1/-1; }
 
-    /* bottom nav premium glass */
     .bottom-nav {
       position: fixed; bottom: 0; left: 0; right: 0;
-      background: rgba(5, 25, 15, 0.7);
-      backdrop-filter: blur(30px) saturate(180%);
-      -webkit-backdrop-filter: blur(30px) saturate(180%);
-      border-top: 1px solid rgba(255,255,255,0.2);
-      display: flex; 
-      justify-content: space-around; 
-      align-items: center;
+      background: var(--glass-bg); backdrop-filter: blur(16px);
+      border-top: 1px solid var(--glass-border);
+      display: flex; justify-content: space-around; align-items: center;
       padding: 8px 12px max(8px, env(safe-area-inset-bottom));
       z-index: 100;
     }
     .nav-item {
-      display: flex; 
-      flex-direction: column; 
-      align-items: center;
-      color: rgba(255,255,255,0.7); 
-      font-size: 11px; 
-      font-weight: 600;
-      background: none; 
-      border: none; 
-      cursor: pointer; 
-      width: 20%;
-      transition: 0.2s;
+      display: flex; flex-direction: column; align-items: center;
+      color: var(--gray); font-size: 10px; font-weight: 600;
+      background: none; border: none; cursor: pointer; width: 20%;
     }
-    .nav-item i { 
-      font-size: 20px; 
-      margin-bottom: 4px; 
-      transition: .3s; 
-      filter: drop-shadow(0 0 8px rgba(0,255,136,0.2));
-    }
-    .nav-item.active { color: var(--primary-green); }
-    .nav-item.active i { transform: translateY(-4px); color: var(--primary-green); }
+    .nav-item i { font-size: 18px; margin-bottom: 4px; transition: .3s; }
+    .nav-item.active { color: var(--primary); }
+    .nav-item.active i { transform: translateY(-3px); }
 
     .fab-container {
-      position: relative; 
-      top: -24px;
+      position: relative; top: -24px;
+      background: var(--white); width: 50px; height: 50px;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      box-shadow: var(--shadow-md);
     }
     #addBtn {
-      width: 56px; 
-      height: 56px; 
-      border-radius: 50%; 
-      border: 2px solid rgba(255,255,255,0.5);
-      background: linear-gradient(145deg, #00cc6a, #008f4c);
-      color: white; 
-      font-size: 24px; 
-      cursor: pointer;
-      display: flex; 
-      align-items: center; 
-      justify-content: center;
-      box-shadow: 0 10px 25px rgba(0,255,136,0.4); 
-      transition: transform .2s, box-shadow .2s;
+      width: 44px; height: 44px; border-radius: 50%; border: none;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: var(--white); font-size: 20px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: var(--shadow-primary); transition: transform .2s;
     }
-    #addBtn:active { transform: scale(0.9); box-shadow: 0 5px 15px var(--primary-green); }
+    #addBtn:active { transform: scale(0.9); }
 
-    .nav-item.gps-active { color: var(--primary-green); }
+    .nav-item.gps-active { color: var(--primary-dark); }
     .nav-item.gps-active i { animation: pulse-ring 2s infinite; }
+    @keyframes pulse-ring {
+      0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+      70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
 
-    /* modal premium */
     .modal-overlay {
-      position: fixed; inset: 0;
-      background: rgba(0,20,8,0.8); 
-      backdrop-filter: blur(12px);
-      z-index: 200; 
-      display: none; 
-      align-items: center; 
-      justify-content: center; 
-      opacity: 0; 
-      transition: opacity .3s;
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
+      z-index: 200; display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity .3s;
     }
     .modal-overlay.open { display: flex; opacity: 1; }
     
     .modal {
-      background: rgba(10, 30, 18, 0.9);
-      backdrop-filter: blur(40px);
-      border: 1px solid rgba(255,255,255,0.25);
-      width: 90%; 
-      max-width: 400px;
-      border-radius: 40px; 
-      padding: 28px 24px; 
-      box-shadow: var(--shadow-lg);
-      transform: scale(0.9); 
-      transition: transform .3s;
+      background: var(--white); width: 90%; max-width: 400px;
+      border-radius: 20px; padding: 20px; box-shadow: var(--shadow-lg);
+      transform: scale(0.9); transition: transform .3s;
     }
     .modal-overlay.open .modal { transform: scale(1); }
     
-    .modal h3 { margin-bottom: 20px; font-size: 22px; color: white; }
-    .form-group { margin-bottom: 16px; }
-    .form-group label { display: block; font-size: 13px; color: #b0e0c0; margin-bottom: 6px; }
+    .modal h3 { margin-bottom: 16px; font-size: 18px; }
+    .form-group { margin-bottom: 12px; }
+    .form-group label { display: block; font-size: 12px; color: var(--dark-light); margin-bottom: 4px; }
     .form-group input {
-      width: 100%; 
-      padding: 14px; 
-      background: rgba(0,0,0,0.3);
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 30px; 
-      font-family: inherit; 
-      outline: none;
-      color: white;
+      width: 100%; padding: 10px; border: 1px solid var(--gray-light);
+      border-radius: 8px; font-family: inherit; outline: none;
     }
-    .form-group input:focus { border-color: var(--primary-green); }
+    .form-group input:focus { border-color: var(--primary); }
     
-    .modal-actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px; }
-    .btn { 
-      padding: 10px 24px; 
-      border-radius: 40px; 
-      border: none; 
-      font-weight: 600; 
-      cursor: pointer;
-      backdrop-filter: blur(10px);
-    }
-    .btn-cancel { background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.2); }
-    .btn-confirm { background: var(--primary-green); color: #022010; font-weight: 700; }
+    .modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; }
+    .btn { padding: 8px 16px; border-radius: 8px; border: none; font-weight: 600; cursor: pointer; }
+    .btn-cancel { background: var(--gray-light); color: var(--dark); }
+    .btn-confirm { background: var(--primary); color: var(--white); }
 
     #toast {
-      position: fixed; top: 24px; left: 50%; transform: translateX(-50%) translateY(-80px);
-      background: rgba(0,30,15,0.9); 
-      backdrop-filter: blur(20px);
-      color: white; 
-      padding: 12px 30px;
-      border-radius: 60px; 
-      font-size: 14px; 
-      font-weight: 500; 
-      z-index: 300;
-      border: 1px solid rgba(255,255,255,0.2);
-      box-shadow: var(--shadow-lg); 
-      transition: transform .4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      display: flex; 
-      align-items: center; 
-      gap: 10px;
+      position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-50px);
+      background: var(--dark); color: var(--white); padding: 10px 20px;
+      border-radius: 30px; font-size: 13px; font-weight: 500; z-index: 300;
+      box-shadow: var(--shadow-lg); transition: transform .4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      display: flex; align-items: center; gap: 8px; white-space: nowrap;
     }
     #toast.show { transform: translateX(-50%) translateY(0); }
-    #toast.success { background: #00a86b; border-color: #88ffaa; }
+    #toast.success { background: var(--primary); }
+    
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-    /* confetti from premium */
+    /* Enhanced Winner Animation Styles */
     .confetti {
       position: fixed; 
       pointer-events: none;
@@ -571,46 +265,43 @@
       height: 10px;
       opacity: 0;
     }
+    
     @keyframes confetti-fall {
-      0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
-      100% { transform: translate(var(--tx), var(--ty)) rotate(var(--rot)); opacity: 0; }
-    }
-
-    .footer {
-      padding: 20px; text-align: center; font-size: 0.9rem; opacity: 0.8;
-      color: #b0d0c0; position: relative; z-index: 2;
+      0% {
+        transform: translate(0, 0) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(var(--tx), var(--ty)) rotate(var(--rot));
+        opacity: 0;
+      }
     }
 
     @media (min-width: 600px) {
       #locationList { grid-template-columns: repeat(2, 1fr); }
-      .bottom-nav { max-width: 500px; left: 50%; transform: translateX(-50%); border-radius: 30px 30px 0 0; }
+      .bottom-nav { max-width: 500px; left: 50%; transform: translateX(-50%); border-radius: 20px 20px 0 0; }
     }
-    @media (prefers-reduced-motion: reduce) { * { animation-duration: 0.01ms !important; } }
   </style>
 </head>
 <body>
 
-  <!-- premium background layer -->
-  <canvas id="dynamic-bg"></canvas>
-  <div class="bg-visuals">
-    <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div><div class="orb orb-4"></div><div class="orb orb-5"></div>
-  </div>
+  <div id="toast"><i class="fas fa-info-circle"></i> <span>Message</span></div>
 
-  <!-- header with glass search -->
   <header>
     <div class="search-wrapper">
-      <input type="text" id="searchInput" placeholder="search restaurants..." autocomplete="off">
+      <input type="text" id="searchInput" placeholder="Search restaurants..." autocomplete="off">
       <button id="clearSearch"><i class="fas fa-times"></i></button>
     </div>
   </header>
 
-  <!-- main content -->
   <main>
     <div id="welcomeScreen">
       <i class="fas fa-map-marked-alt icon-large"></i>
-      <h2 style="font-weight: 700; margin-bottom: 8px;">hawally zone</h2>
-      <p style="color: #b0e0c0; font-size: 14px;">premium glass edition</p>
-      <div class="loading-dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+      <h2 style="font-weight: 700; margin-bottom: 8px;">Please wait</h2>
+      <p style="color: var(--gray); font-size: 14px; margin-bottom: 20px;">Welcome to ardiya zone</p>
+      <div class="loading-dots">
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      </div>
     </div>
 
     <div id="skeletonLoader">
@@ -622,52 +313,86 @@
     <div id="locationList"></div>
   </main>
 
-  <!-- modals (same structure, just class update) -->
   <div class="modal-overlay" id="addModal">
     <div class="modal">
-      <h3>➕ add restaurant</h3>
+      <h3>Add Restaurant</h3>
       <form id="addForm">
-        <div class="form-group"><label>name</label><input type="text" id="newPlaceName" required placeholder="e.g. al-marsa"></div>
-        <div class="form-group"><label>coordinates (lat,lng)</label><input type="text" id="newPlaceCoords" required placeholder="29.3117, 47.4818"></div>
-        <div class="modal-actions"><button type="button" class="btn btn-cancel" onclick="closeModal('addModal')">cancel</button><button type="submit" class="btn btn-confirm">save</button></div>
+        <div class="form-group">
+          <label>Restaurant name</label>
+          <input type="text" id="newPlaceName" required placeholder="write restaurant name">
+        </div>
+        <div class="form-group">
+          <label>Restaurant code </label>
+          <input type="text" id="newPlaceCoords" required placeholder="Exam:29.000000, 47.000000">
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-cancel" onclick="closeModal('addModal')">Cancel</button>
+          <button type="submit" class="btn btn-confirm" id="savePlaceBtn">Save</button>
+        </div>
       </form>
     </div>
   </div>
 
   <div class="modal-overlay" id="locationModal">
     <div class="modal">
-      <h3>📍 set location</h3>
-      <p style="font-size: 13px; color:#c0e0d0; margin-bottom: 12px;">GPS not accessible — enter manually</p>
+      <h3>Set Location</h3>
+      <p style="font-size: 13px; color: var(--gray); margin-bottom: 12px;">
+        GPS not access. Please enter coordinates manually.
+      </p>
       <form id="manualLocForm">
-        <div class="form-group"><label>your coordinates</label><input type="text" id="manualCoords" required placeholder="29.3117, 47.4818"></div>
-        <div class="modal-actions"><button type="button" class="btn btn-cancel" onclick="closeModal('locationModal')">cancel</button><button type="submit" class="btn btn-confirm">set</button></div>
+        <div class="form-group">
+          <label>Your location code </label>
+          <input type="text" id="manualCoords" required placeholder="29.3117, 47.4818">
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-cancel" onclick="closeModal('locationModal')">Cancel</button>
+          <button type="submit" class="btn btn-confirm">Set Location</button>
+        </div>
       </form>
     </div>
   </div>
 
-  <!-- bottom glass navigation -->
   <nav class="bottom-nav">
-    <button class="nav-item active" onclick="setFilter('all')" id="navHome"><i class="fas fa-home"></i></button>
-    <button class="nav-item" onclick="setFilter('fav')" id="navFav"><i class="fas fa-star"></i></button>
-    <div class="fab-container"><button id="addBtn" onclick="openModal('addModal')"><i class="fas fa-plus"></i></button></div>
-    <button class="nav-item" onclick="openMap()"><i class="fas fa-map"></i></button>
-    <button class="nav-item" onclick="toggleGPS()" id="navGps"><i class="fas fa-crosshairs"></i></button>
+    <button class="nav-item active" onclick="setFilter('all')" id="navHome">
+      <i class="fas fa-home"></i> Home
+    </button>
+    <button class="nav-item" onclick="setFilter('fav')" id="navFav">
+      <i class="fas fa-star"></i> Favorites
+    </button>
+    
+    <div class="fab-container">
+      <button id="addBtn" onclick="openModal('addModal')"><i class="fas fa-plus"></i></button>
+    </div>
+    
+    <button class="nav-item" onclick="openMap()">
+      <i class="fas fa-map"></i> Maps
+    </button>
+    <button class="nav-item" onclick="toggleGPS()" id="navGps">
+      <i class="fas fa-crosshairs"></i> Gps
+    </button>
   </nav>
 
-  <div id="toast"><i class="fas fa-info-circle"></i> <span>message</span></div>
-
   <script>
-    // (full original script preserved, only visual styles enhanced)
     const CONFIG = {
-      API_URL: 'https://raw.githubusercontent.com/gpssetter04/ardiya/refs/heads/main/jahra.json',
-      STORAGE_KEYS: { FAVS: 'ardiya_favs', USER_PLACES: 'ardiya_user_places', USER_LOC: 'ardiya_user_loc' }
+      // এখানে আপনার Google Apps Script Web App URL দিন
+      API_URL: 'https://script.google.com/macros/s/AKfycbxAmMMThWZd5JrTvE7c0MPD7_sPKGD4OV9oq6e1ohyk7GimozTMLgxoYvzd3REfL0srpg/exec', 
+      STORAGE_KEYS: {
+        FAVS: 'ardiya_favs',
+        USER_LOC: 'ardiya_user_loc'
+      }
     };
+
     const SAMPLE_DATA = [
-      { name: "Sample Restaurant 1", coords: "29.3117, 47.4818" },
-      { name: "Sample Restaurant 2", coords: "29.3345, 47.6578" },
-      { name: "Sample Restaurant 3", coords: "29.7371, 47.9135" }
+      { name: "Sample Restaurant 1", coords: "29.3117, 47.4818" }
     ];
-    let state = { allPlaces: [], userPlaces: [], favs: new Set(), userLocation: null, filter: 'all', search: '' };
+
+    let state = {
+      allPlaces: [],
+      userLocation: null,
+      filter: 'all',
+      search: ''
+    };
+
     const UI = {
       welcome: document.getElementById('welcomeScreen'),
       skeleton: document.getElementById('skeletonLoader'),
@@ -677,7 +402,7 @@
       toast: document.getElementById('toast'),
       navHome: document.getElementById('navHome'),
       navFav: document.getElementById('navFav'),
-      navGps: document.getElementById('navGps')
+      navGps: document.getElementById('navGps') 
     };
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -704,15 +429,20 @@
       try {
         UI.welcome.style.display = 'none';
         UI.skeleton.style.display = 'grid';
+        
         const res = await fetch(`${CONFIG.API_URL}?t=${Date.now()}`);
-        if (!res.ok) throw new Error();
+        if (!res.ok) throw new Error('Network response was not ok');
+        
         const data = await res.json();
-        if (Array.isArray(data) && data.length > 0) state.allPlaces = data.filter(p => p.name && p.coords);
-        else throw new Error();
+        if (Array.isArray(data) && data.length > 0) {
+          state.allPlaces = data.filter(p => p.name && p.coords);
+        } else {
+          throw new Error('Empty or invalid data');
+        }
       } catch (err) {
-        let localData = JSON.parse(localStorage.getItem(CONFIG.STORAGE_KEYS.USER_PLACES) || '[]');
-        state.allPlaces = localData.length ? localData : SAMPLE_DATA;
-        if (!localData.length) showToast('sample data loaded', 'info');
+        console.error('Fetch failed, using sample data:', err);
+        state.allPlaces = SAMPLE_DATA;
+        showToast('Using sample data (Network/URL error)', 'info');
       } finally {
         UI.skeleton.style.display = 'none';
         UI.list.style.display = 'grid';
@@ -723,7 +453,7 @@
     function loadLocalData() {
       const favs = JSON.parse(localStorage.getItem(CONFIG.STORAGE_KEYS.FAVS) || '[]');
       state.favs = new Set(favs);
-      state.userPlaces = JSON.parse(localStorage.getItem(CONFIG.STORAGE_KEYS.USER_PLACES) || '[]');
+      
       const cachedLoc = JSON.parse(localStorage.getItem(CONFIG.STORAGE_KEYS.USER_LOC));
       if (cachedLoc && (Date.now() - cachedLoc.ts < 24 * 60 * 60 * 1000)) {
         state.userLocation = cachedLoc;
@@ -739,12 +469,21 @@
     }
 
     function toggleGPS() {
-      if (state.userLocation) { showToast('location active', 'success'); return; }
+      if (state.userLocation) {
+        showToast('Location is active', 'success');
+        return;
+      }
+      
       UI.navGps.querySelector('i').className = 'fas fa-circle-notch fa-spin';
+      
       navigator.geolocation.getCurrentPosition(
         (pos) => onLocationSuccess(pos.coords.latitude, pos.coords.longitude),
-        (err) => { UI.navGps.querySelector('i').className = 'fas fa-crosshairs'; openModal('locationModal'); },
-        { enableHighAccuracy: true, timeout: 10000 }
+        (err) => {
+          UI.navGps.querySelector('i').className = 'fas fa-crosshairs';
+          console.warn(err);
+          openModal('locationModal');
+        },
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
       );
     }
 
@@ -752,7 +491,8 @@
       if (navigator.geolocation) {
         navigator.geolocation.watchPosition(
           (pos) => onLocationSuccess(pos.coords.latitude, pos.coords.longitude),
-          null, { enableHighAccuracy: false, timeout: 15000 }
+          null,
+          { enableHighAccuracy: false, timeout: 15000, maximumAge: 60000 }
         );
       }
     }
@@ -768,77 +508,108 @@
       e.preventDefault();
       const val = document.getElementById('manualCoords').value;
       const coords = parseCoords(val);
-      if (coords) { onLocationSuccess(coords.lat, coords.lng); closeModal('locationModal'); showToast('location updated', 'success'); } 
-      else { showToast('invalid coordinates', 'error'); }
+      if (coords) {
+        onLocationSuccess(coords.lat, coords.lng);
+        closeModal('locationModal');
+        showToast('Location updated manually', 'success');
+      } else {
+        showToast('Invalid coordinates', 'error');
+      }
     }
 
     function updateGPSIcon(active) {
-      if (active) { UI.navGps.classList.add('gps-active'); UI.navGps.querySelector('i').className = 'fas fa-crosshairs'; } 
-      else { UI.navGps.classList.remove('gps-active'); }
+      if (active) {
+        UI.navGps.classList.add('gps-active');
+        UI.navGps.querySelector('i').className = 'fas fa-crosshairs';
+      } else {
+        UI.navGps.classList.remove('gps-active');
+      }
     }
 
     function parseCoords(str) {
       if (!str) return null;
       const parts = str.split(/[ ,]+/).map(Number).filter(n => !isNaN(n));
-      return parts.length >= 2 ? { lat: parts[0], lng: parts[1] } : null;
+      if (parts.length >= 2) return { lat: parts[0], lng: parts[1] };
+      return null;
     }
 
     function getDistance(lat1, lon1, lat2, lon2) {
-      const R = 6371e3;
+      const R = 6371e3; 
       const φ1 = lat1 * Math.PI/180, φ2 = lat2 * Math.PI/180;
-      const Δφ = (lat2-lat1) * Math.PI/180, Δλ = (lon2-lon1) * Math.PI/180;
-      const a = Math.sin(Δφ/2)**2 + Math.cos(φ1)*Math.cos(φ2)* Math.sin(Δλ/2)**2;
+      const Δφ = (lat2-lat1) * Math.PI/180;
+      const Δλ = (lon2-lon1) * Math.PI/180;
+      const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+                Math.cos(φ1) * Math.cos(φ2) *
+                Math.sin(Δλ/2) * Math.sin(Δλ/2);
       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
       return R * c;
     }
 
     function render() {
       UI.list.innerHTML = '';
-      const combined = [...state.allPlaces, ...state.userPlaces];
-      let filtered = combined.filter(p => {
-        return p.name.toLowerCase().includes(state.search) && (state.filter !== 'fav' || state.favs.has(p.name));
+      
+      const combinedPlaces = [...state.allPlaces];
+      
+      let filtered = combinedPlaces.filter(p => {
+        const matchesSearch = p.name.toLowerCase().includes(state.search);
+        const matchesFav = state.filter === 'fav' ? state.favs.has(p.name) : true;
+        return matchesSearch && matchesFav;
       });
 
       if (state.userLocation) {
-        filtered.sort((a,b) => {
-          const cA = parseCoords(a.coords), cB = parseCoords(b.coords);
+        filtered.sort((a, b) => {
+          const cA = parseCoords(a.coords);
+          const cB = parseCoords(b.coords);
           if (!cA) return 1; if (!cB) return -1;
           const dA = getDistance(state.userLocation.lat, state.userLocation.lng, cA.lat, cA.lng);
           const dB = getDistance(state.userLocation.lat, state.userLocation.lng, cB.lat, cB.lng);
           return dA - dB;
         });
-      } else filtered.sort((a,b) => a.name.localeCompare(b.name));
+      } else {
+        filtered.sort((a, b) => a.name.localeCompare(b.name));
+      }
 
-      if (!filtered.length) {
-        UI.list.innerHTML = `<div class="empty-state"><i class="fas fa-compass" style="font-size:32px;"></i><br>nothing found</div>`;
+      if (filtered.length === 0) {
+        UI.list.innerHTML = `<div class="empty-state"><i class="fas fa-search" style="font-size:24px; margin-bottom:8px;"></i><br>No places found</div>`;
         return;
       }
 
       filtered.slice(0, 50).forEach(place => {
         const coords = parseCoords(place.coords);
         const isFav = state.favs.has(place.name);
-        let distHtml = '', nearbyClass = '';
+        
+        let distHtml = '';
+        let nearbyClass = '';
+        
         if (state.userLocation && coords) {
-          const distM = getDistance(state.userLocation.lat, state.userLocation.lng, coords.lat, coords.lng);
-          const distKm = (distM/1000).toFixed(1);
-          const time = Math.ceil(distM / 1000 / 40 * 60);
-          distHtml = `<div class="badges"><span class="badge badge-dist"><i class="fas fa-location-arrow"></i> ${distKm} km</span><span class="badge badge-time"><i class="fas fa-car"></i> ${time} min</span></div>`;
-          if (distM < 3000) nearbyClass = 'nearby';
-        } else distHtml = `<div class="badges"><span class="badge"><i class="fas fa-satellite-dish"></i> no gps</span></div>`;
+          const distMeters = getDistance(state.userLocation.lat, state.userLocation.lng, coords.lat, coords.lng);
+          const distKm = (distMeters / 1000).toFixed(1);
+          const time = Math.ceil(distMeters / 1000 / 40 * 60);
+          
+          distHtml = `
+            <div class="badges">
+              <span class="badge badge-dist"><i class="fas fa-location-arrow"></i> ${distKm} km</span>
+              <span class="badge badge-time"><i class="fas fa-car"></i> ${time} min</span>
+            </div>
+          `;
+          if (distMeters < 3000) nearbyClass = 'nearby';
+        } else {
+          distHtml = `<div class="badges"><span class="badge" style="background:#eee; color:#666;">No GPS Data</span></div>`;
+        }
 
         const card = document.createElement('div');
         card.className = `card ${nearbyClass}`;
         card.innerHTML = `
           <div class="card-header">
             <div class="card-title">${place.name}</div>
-            <button class="fav-btn ${isFav?'active':''}" onclick="toggleFav('${place.name.replace(/'/g, "\\'")}', this)">
+            <button class="fav-btn ${isFav?'active':''}" onclick="toggleFav('${place.name}', this)">
               <i class="${isFav?'fas':'far'} fa-star"></i>
             </button>
           </div>
           <div class="card-body">
             ${distHtml}
             <button class="copy-btn" onclick="copyToClip('${place.coords}', this)">
-              <i class="fas fa-copy"></i> copy
+              <i class="fas fa-copy"></i> Copy
             </button>
           </div>
         `;
@@ -854,82 +625,181 @@
     }
 
     function toggleFav(name, btn) {
-      if (state.favs.has(name)) { state.favs.delete(name); btn.classList.remove('active'); btn.querySelector('i').className = 'far fa-star'; } 
-      else { state.favs.add(name); btn.classList.add('active'); btn.querySelector('i').className = 'fas fa-star'; }
+      if (state.favs.has(name)) {
+        state.favs.delete(name);
+        btn.classList.remove('active');
+        btn.querySelector('i').className = 'far fa-star';
+      } else {
+        state.favs.add(name);
+        btn.classList.add('active');
+        btn.querySelector('i').className = 'fas fa-star';
+      }
       localStorage.setItem(CONFIG.STORAGE_KEYS.FAVS, JSON.stringify([...state.favs]));
       if (state.filter === 'fav') render();
     }
 
-    function handleAddPlace(e) {
+    async function handleAddPlace(e) {
       e.preventDefault();
       const name = document.getElementById('newPlaceName').value.trim();
       const coords = document.getElementById('newPlaceCoords').value.trim();
+      const saveBtn = document.getElementById('savePlaceBtn');
+      
       if (name && parseCoords(coords)) {
         const newPlace = { name, coords };
-        state.userPlaces.push(newPlace);
-        localStorage.setItem(CONFIG.STORAGE_KEYS.USER_PLACES, JSON.stringify(state.userPlaces));
-        closeModal('addModal');
-        e.target.reset();
-        state.allPlaces.push(newPlace); 
-        showToast('place added', 'success');
-        render();
+        
+        // Button loading state
+        const originalBtnText = saveBtn.innerText;
+        saveBtn.innerText = 'Saving...';
+        saveBtn.disabled = true;
+
+        try {
+          // Send Data to Google Sheet
+          const response = await fetch(CONFIG.API_URL, {
+            method: 'POST',
+            body: JSON.stringify({ action: 'add', name: name, coords: coords }),
+            headers: {
+              'Content-Type': 'text/plain;charset=utf-8',
+            }
+          });
+
+          const result = await response.json();
+
+          if(result.status === 'success') {
+            closeModal('addModal');
+            e.target.reset();
+            
+            // Add to current UI state and re-render
+            state.allPlaces.push(newPlace);
+            showToast('Saved to Google Sheet!', 'success');
+            render();
+          } else {
+            throw new Error(result.message || 'Error saving data');
+          }
+
+        } catch (error) {
+          console.error('Submission failed:', error);
+          showToast('Error saving data. Check App Script URL.', 'error');
+        } finally {
+          saveBtn.innerText = originalBtnText;
+          saveBtn.disabled = false;
+        }
+
+      } else {
+        showToast('Invalid Name or Coordinates', 'error');
       }
     }
 
+    // --- FIXED COPY & ANIMATION FUNCTION ---
     function copyToClip(text, btn) {
       fireConfetti(btn);
+
       const original = btn.innerHTML;
-      btn.innerHTML = `<i class="fas fa-check"></i> copied!`;
-      btn.style.background = 'rgba(0,255,136,0.3)';
-      setTimeout(() => { btn.innerHTML = original; btn.style.background = ''; }, 1400);
+      btn.innerHTML = `<i class="fas fa-check"></i> Done!`;
+      btn.style.background = 'var(--primary)';
+      
+      setTimeout(() => {
+        btn.innerHTML = original;
+        btn.style.background = '';
+      }, 1500);
 
       if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(text).catch(() => fallbackCopy(text));
-      } else fallbackCopy(text);
+        navigator.clipboard.writeText(text).catch(err => {
+          console.error('Clipboard API failed, trying fallback', err);
+          fallbackCopy(text);
+        });
+      } else {
+        fallbackCopy(text);
+      }
     }
 
     function fallbackCopy(text) {
-      const ta = document.createElement('textarea');
-      ta.value = text; ta.style.position = 'fixed'; ta.style.left = '-9999px';
-      document.body.appendChild(ta); ta.select();
-      try { document.execCommand('copy'); } catch (err) { console.warn(err); }
-      document.body.removeChild(ta);
+      const textArea = document.createElement("textarea");
+      textArea.value = text;
+      textArea.style.position = "fixed";  
+      textArea.style.left = "-9999px";
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      
+      try {
+        const successful = document.execCommand('copy');
+      } catch (err) {
+        console.error('Fallback: Oops, unable to copy', err);
+      }
+      
+      document.body.removeChild(textArea);
     }
 
-    function fireConfetti(el) {
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      const cx = rect.left + rect.width/2, cy = rect.top + rect.height/2;
+    // --- WINNER ANIMATION LOGIC ---
+    function fireConfetti(element) {
+      if(!element) return;
+
+      const rect = element.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      
       const colors = ['#26ccff', '#a25afd', '#ff5e7e', '#88ff5a', '#fcff42', '#ffa62d'];
-      for (let i=0; i<32; i++) {
-        const conf = document.createElement('div');
-        conf.classList.add('confetti');
-        conf.style.backgroundColor = colors[Math.floor(Math.random()*colors.length)];
-        conf.style.borderRadius = Math.random()<0.5 ? '50%' : '2px';
-        conf.style.left = cx + 'px'; conf.style.top = cy + 'px';
-        const angle = Math.random()*2*Math.PI;
-        const vel = 50 + Math.random()*100;
-        const tx = Math.cos(angle)*vel, ty = Math.sin(angle)*vel - 40;
-        conf.style.setProperty('--tx', tx+'px'); conf.style.setProperty('--ty', ty+'px');
-        conf.style.setProperty('--rot', Math.random()*720+'deg');
-        conf.style.animation = `confetti-fall ${0.7+Math.random()*0.5}s cubic-bezier(0.25,1,0.5,1) forwards`;
-        document.body.appendChild(conf);
-        setTimeout(()=>conf.remove(), 1200);
+      const particleCount = 40; 
+
+      for (let i = 0; i < particleCount; i++) {
+        const confetti = document.createElement('div');
+        confetti.classList.add('confetti');
+        
+        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        
+        const isCircle = Math.random() < 0.5;
+        confetti.style.borderRadius = isCircle ? '50%' : '2px';
+        
+        confetti.style.left = `${centerX}px`;
+        confetti.style.top = `${centerY}px`;
+        
+        const angle = Math.random() * Math.PI * 2;
+        const velocity = 60 + Math.random() * 100; 
+        
+        const tx = Math.cos(angle) * velocity;
+        const ty = Math.sin(angle) * velocity - 50; 
+        const rot = Math.random() * 720; 
+
+        confetti.style.setProperty('--tx', `${tx}px`);
+        confetti.style.setProperty('--ty', `${ty}px`);
+        confetti.style.setProperty('--rot', `${rot}deg`);
+        
+        const duration = 0.8 + Math.random() * 0.5;
+        confetti.style.animation = `confetti-fall ${duration}s cubic-bezier(0.25, 1, 0.5, 1) forwards`;
+
+        document.body.appendChild(confetti);
+
+        setTimeout(() => {
+          confetti.remove();
+        }, duration * 1000);
       }
     }
 
     function openMap() {
-      if (state.userLocation) window.open(`https://www.openstreetmap.org/?mlat=${state.userLocation.lat}&mlon=${state.userLocation.lng}#map=14/${state.userLocation.lat}/${state.userLocation.lng}`, '_blank');
-      else { showToast('enable gps first', 'info'); toggleGPS(); }
+      if (state.userLocation) {
+        window.open(`https://www.openstreetmap.org/?mlat=${state.userLocation.lat}&mlon=${state.userLocation.lng}#map=14/${state.userLocation.lat}/${state.userLocation.lng}`, '_blank');
+      } else {
+        showToast('Enable GPS to see your location', 'info');
+        toggleGPS();
+      }
     }
 
-    function openModal(id) { document.getElementById(id).classList.add('open'); }
-    function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-    function showToast(msg, type='info') {
+    function openModal(id) {
+      document.getElementById(id).classList.add('open');
+    }
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('open');
+    }
+    
+    function showToast(msg, type = 'info') {
       UI.toast.querySelector('span').innerText = msg;
-      UI.toast.className = `show ${type==='success'?'success':''}`;
-      UI.toast.querySelector('i').className = type==='success' ? 'fas fa-check-circle' : 'fas fa-info-circle';
-      setTimeout(()=> UI.toast.className = '', 2800);
+      UI.toast.className = `show ${type === 'success' ? 'success' : ''}`;
+      UI.toast.querySelector('i').className = type === 'success' ? 'fas fa-check-circle' : 'fas fa-info-circle';
+      
+      setTimeout(() => {
+        UI.toast.className = '';
+      }, 3000);
     }
   </script>
 </body>
+</html>
